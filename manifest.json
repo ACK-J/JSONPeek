@@ -3,26 +3,31 @@
   "name": "JSONPeek",
   "description": "Listen for JSONP endpoints.",
   "version": "1.0",
-"permissions": [
-  "tabs",
-  "webRequest",
-  "webRequestBlocking",
-  "storage",
-  "activeTab"
-],
+  "permissions": [
+    "tabs",
+    "webRequest",
+    "webRequestBlocking",
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
   "background": {
     "scripts": ["background.js"]
   },
   "action": {
     "default_popup": "popup.html"
   },
-  "host_permissions": [
-    "<all_urls>"
-  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{90f1a754-f2a3-4683-a5fd-981ccabc8843}"
+    }
+  },
   "icons": {
-  "512": "icons/eye-512.png",
-  "128": "icons/eye-128.png"
+    "512": "icons/eye-512.png",
+    "128": "icons/eye-128.png"
 }
-
 }
 

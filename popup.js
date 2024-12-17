@@ -1,9 +1,20 @@
+// Utility function to encode URL to base64
+function encodeUrlToBase64(url) {
+  return btoa(unescape(encodeURIComponent(url)));
+}
+
+// List of query parameters to identify JSONP requests
+const jsonpParams = [
+  'callback', 'jsonpCallback', 'jsonp', 'callback_func', 'func', 
+  'handler', 'jsonp_handler', 'cbfn', 'onload', 'j', 'oncomplete'
+];
+
 // Query the active tab in the current window
-chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
   const tabId = tabs[0].id;
 
   // Retrieve the tab-specific data from local storage
-  chrome.storage.local.get("tabData", (data) => {
+  browser.storage.local.get("tabData").then((data) => {
     const jsonpListElement = document.getElementById("jsonp-list");
     jsonpListElement.innerHTML = ""; // Clear previous content
 
@@ -25,22 +36,67 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
           
           // Add query parameters below the endpoint
           const queryParams = Array.from(url.searchParams.entries());
+
+          // Filter out only the JSONP-related parameters
+          const jsonpQueryParams = queryParams.filter(([param, value]) => jsonpParams.includes(param));
           
-          const paramList = document.createElement("ul");
-          queryParams.forEach(([param, value]) => {
-            const paramItem = document.createElement("li");
-            paramItem.textContent = `${param}: ${value}`;
+          if (jsonpQueryParams.length > 0) {
+            const paramList = document.createElement("ul");
+            jsonpQueryParams.forEach(([param, value]) => {
+              const paramItem = document.createElement("li");
+              paramItem.textContent = `${param}: ${value}`;
 
-            // Highlight the JSONP parameter in red if it matches one of the known JSONP params
-            if (['callback', 'jsonpCallback', 'jsonp', 'callback_func', 'func', 'handler', 'jsonp_handler', 'cbfn', 'onload', 'j', 'oncomplete'].includes(param)) {
-              paramItem.style.color = 'red'; // Highlight in red
-            }
+              // Highlight the JSONP parameter in red
+              paramItem.style.color = 'red';
+              
+              paramList.appendChild(paramItem);
+            });
 
-            paramList.appendChild(paramItem);
+            li.appendChild(paramList);
+          } else {
+            const noParamsMessage = document.createElement("li");
+            noParamsMessage.textContent = "No JSONP parameters found.";
+            li.appendChild(noParamsMessage);
+          }
+
+          // Add the exploit button to each endpoint
+          const exploitButton = document.createElement("button");
+          exploitButton.textContent = "Exploit";
+          exploitButton.style.backgroundColor = "#ff6347"; // Subtle button style
+          exploitButton.style.color = "white";
+          exploitButton.style.border = "none";
+          exploitButton.style.padding = "5px 10px";
+          exploitButton.style.cursor = "pointer";
+          exploitButton.style.fontSize = "12px";
+          exploitButton.style.marginTop = "10px";
+
+          // Handle the exploit button click
+          exploitButton.addEventListener('click', (event) => {
+            event.stopPropagation(); // Prevent opening the endpoint in a new tab
+
+            // Modify query parameters and replace with "alert"
+            jsonpQueryParams.forEach(([param, value]) => {
+              url.searchParams.set(param, 'alert');
+            });
+
+            // Generate the URL with the modified query parameters
+            const newUrl = url.toString();
+
+            // Encode the modified URL to base64
+            const base64Url = encodeUrlToBase64(newUrl);
+
+            // Open a new tab with the base64-encoded URL
+            const newTab = window.open(`https://jsonpeek.ail.fail/?url=${base64Url}`);
           });
 
-          li.appendChild(paramList);
+          li.appendChild(exploitButton);
+
           jsonpListElement.appendChild(li);
+
+          // Add click event listener to open the endpoint in a new tab
+          li.addEventListener('click', () => {
+            browser.tabs.create({ url: endpoint });  // Open the endpoint URL in a new tab
+          });
         });
       } else {
         const li = document.createElement("li");
@@ -52,6 +108,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       li.textContent = "No JSONP requests found for this tab.";
       jsonpListElement.appendChild(li);
     }
+  }).catch((err) => {
+    console.error("Error fetching tab data: ", err);
   });
 });
-

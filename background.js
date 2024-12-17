@@ -4,6 +4,17 @@ const jsonpParams = [
   'handler', 'jsonp_handler', 'cbfn', 'onload', 'j', 'oncomplete'
 ];
 
+// Clear all data in local storage on extension load (first time or refresh)
+async function clearLocalStorage() {
+  try {
+    // Clear all data in local storage
+    await browser.storage.local.clear();
+    console.log('Local storage cleared.');
+  } catch (error) {
+    console.error('Error clearing local storage:', error);
+  }
+}
+
 // Listen for web requests
 browser.webRequest.onBeforeRequest.addListener(
   (details) => {
@@ -18,7 +29,7 @@ browser.webRequest.onBeforeRequest.addListener(
 
     if (isJsonp) {
       // Retrieve the current tab data from local storage
-      browser.storage.local.get("tabData", (data) => {
+      browser.storage.local.get("tabData").then((data) => {
         let tabData = data.tabData || {};
 
         // Ensure there is an entry for the tab
@@ -40,53 +51,46 @@ browser.webRequest.onBeforeRequest.addListener(
           tabData[tabId].jsonpCounter++;
 
           // Update the badge for the current tab
-          browser.action.setBadgeText({ text: tabData[tabId].jsonpCounter.toString(), tabId });
+          const badgeText = tabData[tabId].jsonpCounter > 0 ? tabData[tabId].jsonpCounter.toString() : "";
+          browser.action.setBadgeText({ text: badgeText, tabId });
 
           // Store updated tab data in local storage
           browser.storage.local.set({ tabData });
         }
+      }).catch((err) => {
+        console.error("Error fetching or setting tab data: ", err);
       });
     }
   },
   { urls: ["<all_urls>"] }
 );
 
-// On extension installation, load saved data (if any)
-browser.runtime.onInstalled.addListener(() => {
-  browser.storage.local.get("tabData", (data) => {
-    if (data.tabData) {
-      // Do something with the saved data if needed
-    }
-  });
-});
-
 // Update the badge when a tab is switched or reloaded
 browser.tabs.onActivated.addListener((activeInfo) => {
   const tabId = activeInfo.tabId;
-  
+
   // Retrieve the tab data from local storage and update the badge
-  browser.storage.local.get("tabData", (data) => {
+  browser.storage.local.get("tabData").then((data) => {
     const tabData = data.tabData || {};
-    if (tabData[tabId]) {
-      browser.action.setBadgeText({ text: tabData[tabId].jsonpCounter.toString(), tabId });
-    } else {
-      browser.action.setBadgeText({ text: "" });
-    }
+    const badgeText = tabData[tabId] ? tabData[tabId].jsonpCounter.toString() : "";
+    browser.action.setBadgeText({ text: badgeText, tabId });
+  }).catch((err) => {
+    console.error("Error fetching tab data: ", err);
   });
 });
 
 // Update the badge when the tab is updated (loaded/reloaded)
 browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.status === 'complete' && tabId === tab.id) {
+  if (changeInfo.status === 'complete') {
     // Retrieve the tab data from local storage and update the badge
-    browser.storage.local.get("tabData", (data) => {
+    browser.storage.local.get("tabData").then((data) => {
       const tabData = data.tabData || {};
-      if (tabData[tabId]) {
-        browser.action.setBadgeText({ text: tabData[tabId].jsonpCounter.toString(), tabId });
-      } else {
-        browser.action.setBadgeText({ text: "" });
-      }
+      const badgeText = tabData[tabId] ? tabData[tabId].jsonpCounter.toString() : "";
+      browser.action.setBadgeText({ text: badgeText, tabId });
+    }).catch((err) => {
+      console.error("Error fetching tab data: ", err);
     });
   }
 });
 
+clearLocalStorage();
