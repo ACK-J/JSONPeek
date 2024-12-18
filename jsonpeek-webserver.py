@@ -170,7 +170,7 @@ th:nth-child(3), td:nth-child(3) {
   <body>
     <div class="container">
       <h1>JSONPeek</h1>
-      <p>Testing your JSONP Callbacks...</p>
+      <p>Please make a quick <a href=https://github.com/ACK-J/CSP-B-Gone/issues>GitHub issue</a> for any valid JSONP endpoints discovered :D</p>
       <table>
         <tr>
           <th>Copy</th>

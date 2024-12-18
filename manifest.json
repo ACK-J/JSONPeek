@@ -8,13 +8,9 @@
     "webRequest",
     "webRequestBlocking",
     "storage",
-    "activeTab",
-    "scripting"
+    "activeTab"
   ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
-  "background": {
+   "background": {
     "scripts": ["background.js"]
   },
   "action": {
