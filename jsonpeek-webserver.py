@@ -5,6 +5,7 @@ import ssl
 """
 pip install gunicorn flask
 gunicorn --bind 0.0.0.0:443 --certfile=cert.pem --keyfile=key.pem jsonpeek-webserver:app
+gunicorn --bind 0.0.0.0:443 --certfile=cert.pem --keyfile=key.pem --workers 4 --daemon jsonpeek-webserver:app
 
 
 # Step 1: Generate a private key
