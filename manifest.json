@@ -26,8 +26,7 @@
     }
   },
   "icons": {
-    "512": "icons/eye-512.png",
-    "128": "icons/eye-128.png"
+    "512": "icons/eye-512.png"
 }
 }
 

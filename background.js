@@ -52,6 +52,7 @@ browser.webRequest.onBeforeRequest.addListener(
 
           // Update the badge for the current tab
           const badgeText = tabData[tabId].jsonpCounter > 0 ? tabData[tabId].jsonpCounter.toString() : "";
+          browser.action.setBadgeBackgroundColor({ color: "#C41E3A" });
           browser.action.setBadgeText({ text: badgeText, tabId });
 
           // Store updated tab data in local storage
