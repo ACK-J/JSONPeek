@@ -6,6 +6,7 @@
 
 This addon passively listens for network requests which include GET parameters commonly used by JSONP endpoints. The extension popup will show you any of these detected requests. Clicking on a request in the popup will open the JSONP endpoint in a new tab for you to play around with. Additionally, there is an "exploit" button that sends the suspected JSONP url to my webserver to check if it is exploitable. The source code for the webserver can be found <a href=https://github.com/ACK-J/JSONPeek/blob/main/jsonpeek-webserver.py>HERE</a>. Multiple proof of concepts are attempted with check marks indicating success and an X indicating failure.
 # Popup
+The image below shows the extension popup with the domain name at the top, the suspected JSONP parameter discovered highlighted in red, and an exploit button in the bottom left corner.
 <p align="center">
   <img src="https://github.com/user-attachments/assets/a6d26b23-d34b-4920-bcef-9eead8952eb5" alt="GUI">
 </p>
