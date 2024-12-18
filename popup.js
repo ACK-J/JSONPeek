@@ -79,11 +79,8 @@ browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
               url.searchParams.set(param, 'alert');
             });
 
-            // Generate the URL with the modified query parameters
-            const newUrl = url.toString();
-
             // Encode the modified URL to base64
-            const base64Url = encodeUrlToBase64(newUrl);
+            const base64Url = encodeUrlToBase64(url.href);
 
             // Open a new tab with the base64-encoded URL
             const newTab = window.open(`https://jsonpeek.ail.fail/?url=${base64Url}`);
@@ -100,12 +97,12 @@ browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
         });
       } else {
         const li = document.createElement("li");
-        li.textContent = "No JSONP requests found for this tab.";
+        li.textContent = "No JSONP callbacks found for this tab.";
         jsonpListElement.appendChild(li);
       }
     } else {
       const li = document.createElement("li");
-      li.textContent = "No JSONP requests found for this tab.";
+      li.textContent = "No JSONP callbacks found for this tab.";
       jsonpListElement.appendChild(li);
     }
   }).catch((err) => {
