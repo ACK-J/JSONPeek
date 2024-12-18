@@ -2,6 +2,19 @@ from flask import Flask, request, render_template_string
 import base64
 import ssl
 
+"""
+pip install gunicorn flask
+gunicorn --bind 0.0.0.0:443 --certfile=cert.pem --keyfile=key.pem jsonpeek-webserver:app
+
+
+# Step 1: Generate a private key
+openssl genpkey -algorithm RSA -out key.pem
+# Step 2: Create a certificate signing request (CSR)
+openssl req -new -key key.pem -out csr.pem
+# Step 3: Create a self-signed certificate valid for 10 years (3650 days)
+openssl x509 -req -days 3650 -in csr.pem -signkey key.pem -out cert.pem
+"""
+
 app = Flask(__name__)
 
 # Define the HTML template
@@ -278,6 +291,7 @@ def index():
     return render_template_string(template, decoded_url=decoded_value)
 
 if __name__ == '__main__':
-    context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
-    context.load_cert_chain(certfile='cert.pem', keyfile='key.pem')
-    app.run(host='0.0.0.0', port=443, ssl_context=context)
+    #context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+    #context.load_cert_chain(certfile='cert.pem', keyfile='key.pem')
+    #app.run(host='0.0.0.0', port=443, ssl_context=context)
+    app.run(host='0.0.0.0', port=5000)  # Default run for testing locally
