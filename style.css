@@ -23,6 +23,16 @@ header {
   margin-bottom: 20px;
 }
 
+/* Prevent visited links from being highlighted */
+a:visited {
+  color: inherit; /* Use the same color as normal links */
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 h1 {
   font-size: 22px;
   font-weight: 600;
@@ -40,6 +50,18 @@ h1 {
 ul {
   list-style-type: none;
   padding-left: 0;
+}
+
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.containerBHIS {
+  margin-left: auto;
+  padding-top: 20px;  
+  margin-right: auto;
 }
 
 /* Individual endpoint styling */
