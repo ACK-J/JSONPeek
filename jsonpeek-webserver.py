@@ -165,12 +165,25 @@ th:nth-child(3), td:nth-child(3) {
     opacity: 1;
 }
 
+p {
+    color: #444;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    max-width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
     </style>
   </head>
   <body>
     <div class="container">
       <h1>JSONPeek</h1>
-      <p>Please make a quick <a href=https://github.com/ACK-J/CSP-B-Gone/issues>GitHub issue</a> for any valid JSONP endpoints discovered :D</p>
+      <p><strong>JSONPeek</strong> is a Firefox extension and a web service designed to test potential <strong>JSONP</strong> endpoints by injecting payloads into the common callback parameters of a given URL. This webserver accepts a <b>url</b> GET parameter that includes a single base64 encoded suspected JSONP endpoint. Common JSONP parameters of the suspected endpoint are injected with proof of concept payloads (highlighted in red below) in an attempt to trigger the <b>alert()</b> function. This webpage hooks the alert function and records the success or failure of each payload attempt in the table below.</p>
+      <p>To try it out, simply click <a href="https://jsonpeek.com?url=aHR0cHM6Ly93d3cudzNzY2hvb2xzLmNvbS9qcy9kZW1vX2pzb25wMi5waHA/Y2FsbGJhY2s9anNvbnBlZWs=">HERE</a> to test a sample URL.</p>
+      <p>If you discover a valid JSONP endpoint, please report it by creating a quick <a href="https://github.com/ACK-J/CSP-B-Gone/issues">GitHub issue</a>!</p>
+      <a href="https://addons.mozilla.org/en-US/firefox/addon/jsonpeek/"><img src="https://blog.mozilla.org/addons/files/2020/04/get-the-addon-fx-apr-2020.svg" alt="for Firefox" height="60px" style="display: block;margin-left: auto;margin-right: auto;"></a>
       <table>
         <tr>
           <th>Copy</th>
