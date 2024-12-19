@@ -24,6 +24,5 @@ If successful an alert box will fire. This event will change the row's status in
 # Why do I want to find JSONP endpoints?
 The most common way to bypass CSP is by finding a JSONP endpoint on a trusted domain within the CSP. <a href=https://dev.to/benregenspan/the-state-of-jsonp-and-jsonp-vulnerabilities-in-2021-52ep>JSONP</a> takes advantage of the fact that the same-origin policy does not prevent execution of external `<script>` tags. Usually, a `<script src="some/js/file.js">` tag represents a static script file. But you can just as well create a dynamic API endpoint, say `/userdata. jsonp`, and have it behave as a script by accepting a query parameter (such as `?callback=CALLBACK`). 
 
-## Donations ❤️
-If you are feeling generous or really like my work, consider donating
+## Donations 
 - Monero Address: `89jYJvX3CaFNv1T6mhg69wK5dMQJSF3aG2AYRNU1ZSo6WbccGtJN7TNMAf39vrmKNR6zXUKxJVABggR4a8cZDGST11Q4yS8`
