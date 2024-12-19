@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template_string
+from markupsafe import Markup
 import base64
 import ssl
 
@@ -281,7 +282,7 @@ p {
         navigator.clipboard.writeText(url);
       }
 
-      const checkURL = '{{ decoded_url | safe }}';
+      const checkURL = '{{ decoded_url }}';
       processAndDisplayVariations(checkURL);
     </script>
 
@@ -295,14 +296,14 @@ def index():
     base64_value = request.args.get('url')
 
     if not base64_value:
-        return render_template_string(template, decoded_url="Error: Missing 'url' parameter")
+        return render_template_string(template, decoded_url="")
 
     try:
         decoded_value = base64.b64decode(base64_value).decode('utf-8')
     except Exception as e:
-        return render_template_string(template, decoded_url=f"Error decoding base64 value: {str(e)}")
+        return render_template_string(template, decoded_url="")
 
-    return render_template_string(template, decoded_url=decoded_value)
+    return render_template_string(template, decoded_url=Markup(decoded_value))
 
 if __name__ == '__main__':
     #context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
