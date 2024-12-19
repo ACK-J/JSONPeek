@@ -74,11 +74,6 @@ browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
           exploitButton.addEventListener('click', (event) => {
             event.stopPropagation(); // Prevent opening the endpoint in a new tab
 
-            // Modify query parameters and replace with "alert"
-            jsonpQueryParams.forEach(([param, value]) => {
-              url.searchParams.set(param, 'alert');
-            });
-
             // Encode the modified URL to base64
             const base64Url = encodeUrlToBase64(url.href);
 
