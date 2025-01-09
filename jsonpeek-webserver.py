@@ -4,17 +4,12 @@ import base64
 import ssl
 
 """
-pip install gunicorn flask
-gunicorn --bind 0.0.0.0:443 --certfile=cert.pem --keyfile=key.pem jsonpeek-webserver:app
-gunicorn --bind 0.0.0.0:443 --certfile=cert.pem --keyfile=key.pem --workers 4 --daemon jsonpeek-webserver:app
-
-
-# Step 1: Generate a private key
-openssl genpkey -algorithm RSA -out key.pem
-# Step 2: Create a certificate signing request (CSR)
-openssl req -new -key key.pem -out csr.pem
-# Step 3: Create a self-signed certificate valid for 10 years (3650 days)
-openssl x509 -req -days 3650 -in csr.pem -signkey key.pem -out cert.pem
+pip install gunicorn flask Flask-Cors
+sudo apt install certbot
+sudo certbot certonly --standalone --preferred-challenges http -d {{yourdomain.com}}
+sudo crontab -e
+0 0 * * * certbot renew --quiet && systemctl reload gunicorn
+gunicorn --bind 0.0.0.0:443 --certfile=/etc/letsencrypt/live/{{yourdomain.com}}/fullchain.pem --keyfile=/etc/letsencrypt/live/{{yourdomain.com}}/privkey.pem --workers 4 --daemon jsonpeek-webserver:app
 """
 
 app = Flask(__name__)
