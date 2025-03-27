@@ -52,8 +52,8 @@ browser.webRequest.onBeforeRequest.addListener(
 
           // Update the badge for the current tab
           const badgeText = tabData[tabId].jsonpCounter > 0 ? tabData[tabId].jsonpCounter.toString() : "";
-          browser.action.setBadgeBackgroundColor({ color: "#C41E3A" });
-          browser.action.setBadgeText({ text: badgeText, tabId });
+          browser.browserAction.setBadgeBackgroundColor({ color: "#C41E3A" });
+          browser.browserAction.setBadgeText({ text: badgeText, tabId });
 
           // Store updated tab data in local storage
           browser.storage.local.set({ tabData });
@@ -74,7 +74,7 @@ browser.tabs.onActivated.addListener((activeInfo) => {
   browser.storage.local.get("tabData").then((data) => {
     const tabData = data.tabData || {};
     const badgeText = tabData[tabId] ? tabData[tabId].jsonpCounter.toString() : "";
-    browser.action.setBadgeText({ text: badgeText, tabId });
+    browser.browserAction.setBadgeText({ text: badgeText, tabId });
   }).catch((err) => {
     console.error("Error fetching tab data: ", err);
   });
@@ -87,7 +87,7 @@ browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     browser.storage.local.get("tabData").then((data) => {
       const tabData = data.tabData || {};
       const badgeText = tabData[tabId] ? tabData[tabId].jsonpCounter.toString() : "";
-      browser.action.setBadgeText({ text: badgeText, tabId });
+      browser.browserAction.setBadgeText({ text: badgeText, tabId });
     }).catch((err) => {
       console.error("Error fetching tab data: ", err);
     });
