@@ -77,8 +77,9 @@ browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
             // Encode the modified URL to base64
             const base64Url = encodeUrlToBase64(url.href);
 
-            // Open a new tab with the base64-encoded URL
-            const newTab = window.open(`https://jsonpeek.com/?url=${base64Url}`);
+            // Open the local exploit.html page with the base64-encoded URL as a parameter
+            const exploitUrl = browser.runtime.getURL(`exploit.html#${base64Url}`);
+            browser.tabs.create({ url: exploitUrl });
           });
 
           li.appendChild(exploitButton);

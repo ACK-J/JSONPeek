@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "JSONPeek",
   "description": "Listen for JSONP endpoints.",
-  "version": "1.1",
+  "version": "1.2",
   "permissions": [
     "tabs",
     "webRequest",
@@ -11,12 +11,17 @@
     "activeTab",
     "<all_urls>"
   ],
-   "background": {
+  "background": {
     "scripts": ["background.js"]
   },
   "browser_action": {
     "default_popup": "popup.html"
   },
+  "web_accessible_resources": [
+    "exploit.html",
+    "exploit.js"
+  ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'; style-src 'self' 'unsafe-inline';",
   "browser_specific_settings": {
     "gecko": {
       "id": "{90f1a754-f2a3-4683-a5fd-981ccabc8843}"
@@ -24,6 +29,5 @@
   },
   "icons": {
     "512": "icons/eye-512.png"
+  }
 }
-}
-
